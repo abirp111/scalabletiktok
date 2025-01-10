@@ -1,0 +1,77 @@
+{% extends "base-video.html" %}
+{% block title %}Video{% endblock %}
+{% block navbar %}
+<li><a href="{{url_for('index')}}"><i class="bi bi-house navicon"></i>Home</a></li>
+{% if session['isSignedIn'] %}
+	<li><a href="{{url_for('dashboard')}}"><i class="bi bi-person-workspace navicon"></i> Dashboard</a></li>
+	<li><a href="{{url_for('signout')}}"><i class="bi bi-box-arrow-right navicon"></i> Sign Out</a></li>
+{% else %}
+	<li><a href="{{url_for('signup')}}"><i class="bi bi-pencil-square navicon"></i> Sign Up</a></li>
+	<li><a href="{{url_for('signin')}}"><i class="bi bi-key navicon"></i> Sign In</a></li>
+{% endif %}
+{% endblock %}
+{% block content %}
+ <section id="portfolio-details" class="portfolio-details section">
+	<div class="container" data-aos="fade-up" data-aos-delay="100">
+	  <div class="row gy-4">
+		<div class="col-lg-8">
+		  <div class="portfolio-details-slider swiper init-swiper">
+			<video width="480" height="360" class="img-fluid" controls>
+				<source src="{{ video['video_url'] }}" type="video/mp4">
+			  Your browser does not support the video tag.
+			</video>
+		  </div>
+		</div>
+		<div class="col-lg-4">
+		  <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
+			<h3>{{ video['title'] }}</h3>
+			<ul>
+			  <li><strong>Released by</strong>: {{ video['email'] }}</li>
+			  <li><strong>Tags</strong>: 
+				{% for tag in video['hashtag'] %}
+					<span class="badge text-bg-secondary">{{tag}}</span>
+				{% endfor %}
+			  </li>
+			</ul>
+			<h3>Rating: 👍{{ rating }}</h3>
+			{% if 'isSignedIn' in session.keys() and role == "consumer" %}
+				<p>Rate this video:</p>
+				<form action="{{ url_for('post_rating', vid = video['_id']) }}" method="POST" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+					<input class="form-check-input" type="radio" id="1" name="rating" value="1" checked>
+					<label class="form-check-label" for="1">1</label>
+					<input class="form-check-input" type="radio" id="2" name="rating" value="2">
+					<label class="form-check-label" for="2">2</label>
+					<input class="form-check-input" type="radio" id="3" name="rating" value="3">
+					<label class="form-check-label" for="3">3</label>
+					<input class="form-check-input" type="radio" id="4" name="rating" value="4">
+					<label class="form-check-label" for="4">4</label>
+					<input class="form-check-input" type="radio" id="5" name="rating" value="5">
+					<label class="form-check-label" for="5">5</label>
+					
+					
+					<br/>
+					<input class="btn btn-primary mt-2" type="submit" value="Rate">
+				</form>
+			{% endif %}
+		  </div>
+		  <div class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
+			<h2>Comments</h2>
+			{% if 'isSignedIn' in session.keys() and role == "consumer" %}
+				<p>Share your thoughts:</p>
+				<form action="{{ url_for('post_comment', vid = video['_id']) }}" method="POST" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+					<input class="form-control" type="text" name="comment" placeholder="Add comment">
+					<input class="btn btn-primary mt-2" type="submit" value="Post Comment">
+				</form>
+			{% endif %}
+			<br>
+			<ul>
+				{% for comment in comments %}
+				<li><p>Email: {{ comment['email'] }} - {{ comment['comment'] }}</p></li>
+				{% endfor %}
+			</ul>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </section>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}TikTok{% endblock %}
+{% block navbar %}
+<li><a href="#" class="active"><i class="bi bi-house navicon"></i>Home</a></li>
+{% if session['isSignedIn'] %}
+	<li><a href="{{url_for('dashboard')}}"><i class="bi bi-person-workspace navicon"></i> Dashboard</a></li>
+	<li><a href="{{url_for('signout')}}"><i class="bi bi-box-arrow-right navicon"></i> Sign Out</a></li>
+{% else %}
+	<li><a href="{{url_for('signup')}}"><i class="bi bi-pencil-square navicon"></i> Sign Up</a></li>
+	<li><a href="{{url_for('signin')}}"><i class="bi bi-key navicon"></i> Sign In</a></li>
+{% endif %}
+{% endblock %}
+{% block content %}
+    <section id="portfolio" class="portfolio section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Videos</h2>
+		{% if not videos %}
+			<p>Currently, there are no videos uploaded by the users.</p>
+		{% endif %}
+      </div>
+	  {% if videos %}
+      <div class="container">
+        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+			{% for video in videos %}
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
+              <div class="portfolio-content h-100">
+                <video class="w-100 h-100 object-fit-cover rounded-top img-fluid" width="320" height="240" controls>
+                  <source src="{{ video['video_url'] }}" type="video/mp4">
+                  Browser does not support the video.
+                  </video>
+                        <div class="portfolio-info">
+                          <h4>{{ video['title'] }}</h4>
+                          <p>{{ video['email'] }}</p>
+                  {% for tag in video['hashtag'] %}
+                                  <span class="badge text-bg-primary">{{tag}}</span>
+                          {% endfor %}
+                          <a href="{{url_for('video', vid = video['_id'])}}" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                        </div>
+              </div>
+            </div>
+			{% endfor %}
+          </div>
+        </div>
+      </div>
+	  {% endif %}
+    </section>
+
+
+    
+	
+	
+	
+{% endblock %}

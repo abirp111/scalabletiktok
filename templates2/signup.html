@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+{% block navbar %}
+<li><a href="{{url_for('index')}}"><i class="bi bi-house navicon"></i>Home</a></li>
+{% if session['isSignedIn'] %}
+	<li><a href="{{url_for('dashboard')}}"><i class="bi bi-person-workspace navicon"></i> Dashboard</a></li>
+	<li><a href="{{url_for('signout')}}"><i class="bi bi-box-arrow-right navicon"></i> Sign Out</a></li>
+{% else %}
+	<li><a href="#" class="active"><i class="bi bi-pencil-square navicon"></i> Sign Up</a></li>
+	<li><a href="{{url_for('signin')}}"><i class="bi bi-key navicon"></i> Sign In</a></li>
+{% endif %}
+{% endblock %}
+{% block content %}
+    <section id="contact" class="contact section light-background">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Sign Up</h2>
+      </div>
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+          <div class="col-lg-7">
+            <form action="{{ url_for('signup') }}" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+              <div class="row gy-4">
+                <div class="col-md-12">
+                  <label for="email-field" class="pb-2">Email</label>
+                  <input type="email" name="email" id="email-field" class="form-control" required="required">
+                </div>
+				        <div class="col-md-6">
+                  <label for="password-field" class="pb-2">Password</label>
+                  <input type="password" name="password" id="password-field" class="form-control" required="required">
+                </div>
+				        <div class="col-md-6">
+                  <label for="confirm-password-field" class="pb-2">Confirm Password</label>
+                  <input type="password" name="confirm_password" id="confirm-password-field" class="form-control" required="required">
+                </div>
+                <div class="col-md-12 text-center">
+                  <div class="loading">Loading</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Your message has been sent. Thank you!</div>
+                  <button type="submit">Sign Up</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
